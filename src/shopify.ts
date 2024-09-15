@@ -3,14 +3,14 @@ import {createStorefrontApiClient} from '@shopify/storefront-api-client';
 import { CollectionListings, Products } from "types";
 
 const admin = createAdminRestApiClient({
-    accessToken: "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",
-    storeDomain:"a87399-2.myshopify.com",
+    accessToken: process.env.ACCESS_TOKEN,
+    storeDomain:process.env.STORE_DOMAIN,
     apiVersion:"2024-10"
 })
 
 const store = createStorefrontApiClient({
-    publicAccessToken: "cd588732949ad89c92fa17e0ad72e97b",
-    storeDomain:"a87399-2.myshopify.com",
+    publicAccessToken: process.env.PUBLIC_ACCESS_TOKEN,
+    storeDomain:process.env.STORE_DOMAIN,
     apiVersion:"2024-10"
 })
 
