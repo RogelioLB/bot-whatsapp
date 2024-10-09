@@ -13,9 +13,17 @@ import { addBlacklistFlow } from "./flows/addBlacklistFlow";
 config();
 
 const PORT = process.env.PORT ?? 3008
+enum STATUS {
+    "Iniciando",
+    "Listo",
+    "Error",
+    "Esperando accion"
+}
+
 
 
 const main = async () => {
+    let status = STATUS["Iniciando"]
     const adapterFlow = createFlow([flow,searchProductFlow,getProductsFromCollectionFlow,createCartFlow,addProductsToCartFlow,checkoutURLFlow,cotizationFlow,addBlacklistFlow])
     
     const adapterProvider = createProvider(Provider)
@@ -24,7 +32,31 @@ const main = async () => {
     const { handleCtx, httpServer } = await createBot({
         flow: adapterFlow,
         provider: adapterProvider,
-        database: adapterDB,
+        database: adapterDB
+    })
+
+    adapterProvider.server.get("/v1/status",
+        handleCtx(async (bot,req,res)=>{
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            switch(status){
+                case STATUS["Iniciando"]:
+                    return res.end(JSON.stringify({status:"Iniciando"}))
+                case STATUS["Listo"]:
+                    return res.end(JSON.stringify({status:"Listo"}))
+                case STATUS["Error"]:
+                    return res.end(JSON.stringify({status:"Error"}))
+                case STATUS["Esperando accion"]:
+                    return res.end(JSON.stringify({status:"Esperando accion"}))
+            }
+        })
+    )
+
+    adapterProvider.on("require_action",(arg)=>{
+        status = STATUS["Esperando accion"]
+    })
+
+    adapterProvider.on("ready",()=>{
+        status = STATUS["Listo"]
     })
 
     adapterProvider.server.post(

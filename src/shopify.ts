@@ -1,6 +1,8 @@
 import {createAdminRestApiClient} from "@shopify/admin-api-client"
 import {createStorefrontApiClient} from '@shopify/storefront-api-client';
+import { config, configDotenv } from "dotenv";
 import { CollectionListings, Products } from "types";
+config()
 
 const admin = createAdminRestApiClient({
     accessToken: process.env.ACCESS_TOKEN,
