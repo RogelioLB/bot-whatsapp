@@ -10,6 +10,7 @@ import { addProductsToCartFlow } from "./flows/addProductsToCartFlow";
 import { checkoutURLFlow } from "./flows/checkout";
 import { cotizationFlow } from "./flows/cotization";
 import { addBlacklistFlow } from "./flows/addBlacklistFlow";
+import { recognizeImages } from "./flows/recognizeImage";
 config();
 
 const PORT = process.env.PORT ?? 3008
@@ -24,7 +25,7 @@ enum STATUS {
 
 const main = async () => {
     let status = STATUS["Iniciando"]
-    const adapterFlow = createFlow([flow,searchProductFlow,getProductsFromCollectionFlow,createCartFlow,addProductsToCartFlow,checkoutURLFlow,cotizationFlow,addBlacklistFlow])
+    const adapterFlow = createFlow([flow,searchProductFlow,getProductsFromCollectionFlow,createCartFlow,addProductsToCartFlow,checkoutURLFlow,cotizationFlow,addBlacklistFlow,recognizeImages])
     
     const adapterProvider = createProvider(Provider)
     const adapterDB = new Database()

@@ -1,9 +1,9 @@
 import exceljs from 'exceljs';
 import path from "path"
-import { fileURLToPath } from "url";
 import { saveFile } from '~/db/files';
 const { Workbook } = exceljs;
 import { v4 as uuid } from "uuid"
+import { __dirname } from './dirname';
 
 
 
@@ -15,8 +15,6 @@ export async function getCotization(products:Array<{
     brand: string,
     price:number
 }>,client:string){
-    const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-    const __dirname = path.dirname(__filename); // get the name of the directory
     const identifier = uuid()
     const pathname = path.resolve(__dirname,"../files/Formato.xlsx")
     const workbook = new Workbook();

@@ -203,15 +203,17 @@ interface CartLinesAddResponse {
     cartLinesAdd:Cart
 }
 
-export const addProductToCart = async (productId:string,quantity:number,cartId:string) => {
+export const addProductToCart = async (products:{variantId:string,quantity:number}[],cartId:string) => {
     const operation = `
         mutation cartLinesAdd {
             cartLinesAdd (
                 cartId: "${cartId}"
-                lines: [{
-                    quantity: ${quantity},
-                    merchandiseId: "${productId}"
-                }]
+                lines: ${products.map(product=>{
+                    return `{
+                        quantity: ${product.quantity},
+                        merchandiseId: "${product.variantId}"
+                    }`
+                })}
             ) {
                 cart{
                     id,
@@ -252,6 +254,7 @@ export const getVariantId = async (productId:string) => {
     if(productId.includes("gid://shopify/Product/")){
     const id = productId.split("gid://shopify/Product/")[1];
     const data = await admin.get(`products/${id}/variants`).then(res=>res.json())
+    console.log(data)
     return data.variants[0];
     }
     else{

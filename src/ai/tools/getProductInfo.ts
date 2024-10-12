@@ -7,8 +7,8 @@ export default {
     }),
     description: "Get product info if the user asks for it",
     execute: async ({productId}:{productId:string}) => {
+        console.log("productId", productId)
         const data = await getProductById(productId)
-        console.log(data)
         return data;
     }
 }
